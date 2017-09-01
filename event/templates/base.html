@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{% static  'bootstrap/css/bootstrap.css' %}">
+    <script src="{%  static 'bootstrap/js/bootstrap.js' %}"></script>
+    <title>{% block title %}{% endblock %}</title>
+{% block head %}
+{% endblock %}
+</head>
+
+
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TO DO</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'event:index' %}">Home</a></li>
+                    {%  if user.is_authenticated %}
+                    <li><a href="{% url 'event:events' user.pk %}">Plans</a></li>
+                    <li><a href="{% url 'users:profile' user.pk %}">Profile</a></li>
+                    {% endif %}
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                         <li><a href="{% url 'logout' %}">Log out</a></li>
+                    {% else %}
+                        {% if not request.path == '/users/login/' %}
+                        <li><a href="{% url 'login' %}{% if request.path != '/users/users/register/' and request.path != '/users/logout/' %}?next={{ request.path }}{% endif %}">Log in</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-warning">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+            {% endfor %}
+            {% block page_content %}{% endblock %}
+        </div>
+    {% endblock %}
+</body>
+</html>
+
+
+
+

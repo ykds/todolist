@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Plans {% endblock %}
+
+{% block page_content %}
+    {% if event_list %}
+    <table class="table table-hover">
+        <thead>
+            <th>标题</th>
+            <th>完成</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+        {% for event in event_list %}
+            <tr {% if event.has_done == True %} class="bg-success"{% else %} class="bg-info"{% endif %}>
+                <td>{{ event.title }}</td>
+                <td>{{ event.has_done }}</td>
+                <td>{{ event.created_time }}</td>
+                <td>
+                    <a href="{% url 'event:delete' event.pk %}" class="btn btn-danger">删除</a>
+                    {% if not event.has_done %}
+                    <a href="{% url 'event:done' event.pk %}" class="btn btn-primary">完成</a>
+                    {% endif %}
+                    <a href="{% url 'event:info' event.pk %}" class="btn btn-primary">详情</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <h3 align="center">暂无计划---请添加您的计划</h3>
+    {% endif %}
+    <br><br><br>
+    {% if user.is_authenticated %}
+
+    <div class="col-md-4">
+        <form class="form" action="{% url 'event:add' user.pk %}" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                </div>
+            {% endfor %}
+            <button style="margin-top: 10px" type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block title %}Edit Profile {% endblock %}
+
+{% block page_content %}
+<div class="col-md-4">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">完成</button>
+        <input type="hidden" name="next" value="/users/users/profile/{{ user.pk }}">
+    </form>
+</div>
+{% endblock %}

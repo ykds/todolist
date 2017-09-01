@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+
+{% block title %} Log In {% endblock %}
+
+{% block page_content %}
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h2 style="margin:30px 0 40px 45px; color: #2aabd2" >登录</h2>
+        <form action="{% url 'login' %}" method="post" class="form-group">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                {% for field in form %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                {% endfor %}
+                </div>
+            </div>
+
+            <button style="margin: 10px 0 0 55px" class="btn btn-primary" type="submit">登录</button>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+        <div>
+            <span>没有帐号?<a href="{% url 'users:register' %}?next={{ request.path }}">立即注册</a></span>
+            <span class="align-right"><span><a href="{% url 'password_reset' %}">忘记密码?</a></span></span>
+        </div>
+    </div>
+
+{% endblock %}

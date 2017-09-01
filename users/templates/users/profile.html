@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} Profile {% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'users/sytle.css' %}">
+{% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+        <h1>Profile - {{ user.username }}</h1>
+    </div>
+    <div class="profile-header">
+        <p><b>用户名:</b> {{ user.username }}</p>
+        <p><b>姓名:</b> {{ user.last_name }} {{ user.first_name }}</p>
+        <p><b>邮箱:</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+        <p><b>创建时间:</b> {{ user.date_joined }}</p>
+    </div>
+    <br>
+    <a href="{% url 'users:edit' user.pk %}" class="btn btn-danger">编辑</a>
+{% endblock %}
